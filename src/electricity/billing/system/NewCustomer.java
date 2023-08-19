@@ -51,12 +51,12 @@ public class NewCustomer extends JFrame implements ActionListener {
 		
 		
 		Random rand = new Random();
-		meterNo = rand.nextInt();
+		meterNo = Math.abs(rand.nextInt());
 		JLabel jl1meterNo = new JLabel("Meter Number : ");
 		jl1meterNo.setBounds(100,120,200,20);
 		p1.add(jl1meterNo);
 		
-		JLabel jl2meterNo = new JLabel(""+Math.abs(meterNo)+"");
+		JLabel jl2meterNo = new JLabel(""+meterNo+"");
 		jl2meterNo.setBounds(250,120,200,20);
 		p1.add(jl2meterNo);
 		
@@ -119,7 +119,7 @@ public class NewCustomer extends JFrame implements ActionListener {
 		
 		
 		
-		setSize(600,600);
+		setSize(600,550);
 		setLocation(400,100);
 		setResizable(false);
 		setVisible(true);
@@ -146,9 +146,9 @@ public class NewCustomer extends JFrame implements ActionListener {
 					String cstate = state.getText();
 					if(ConnectionProvider.addCustomer(fname, meterno, mobileNo, cemail, caddress, ccity, cstate)) {
 						if(ConnectionProvider.addUser(fname, meterno, " ", "", "")) {
-							JOptionPane.showMessageDialog(this, "New Customer Account Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
+	
 							setVisible(false);
-							new MeterInfo();
+							new MeterInfo(meterno);
 						}
 					}
 				}else {
@@ -161,7 +161,8 @@ public class NewCustomer extends JFrame implements ActionListener {
 		}
 		
 		if(e.getSource() == cancel) {
-			System.out.println("Cancel Button");
+			setVisible(false);
+			new MainPanel();
 		}
 	}
 

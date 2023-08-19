@@ -23,16 +23,14 @@ import electricity.billing.system.helper.ConnectionProvider;
 
 public class MeterInfo extends JFrame implements ActionListener {
 	
-	JTextField name,city,state,email,mobile;
-	Choice clocation,metertype,phasecode;
-	JTextArea address;
-	JButton next,cancel;
+	Choice clocation,metertype,phasecode,billtype;
+	JButton submit;
 	long meterNo;
 	
-	public MeterInfo() {
+	public MeterInfo(long meterno) {
 		super("Meter Information");
+		this.meterNo = meterno;
 		JPanel p1 = new JPanel();
-		JPanel p2 = new JPanel();
 		
 		p1.setLayout(null);
 		p1.setBackground(new Color(164,221,230,255));
@@ -49,7 +47,7 @@ public class MeterInfo extends JFrame implements ActionListener {
 		jl1meterNo.setBounds(100,80,200,20);
 		p1.add(jl1meterNo);
 		
-		JLabel jl2meterNo = new JLabel("2517321110");
+		JLabel jl2meterNo = new JLabel(""+meterNo+"");
 		jl2meterNo.setBounds(250,80,200,20);
 		p1.add(jl2meterNo);
 		
@@ -64,9 +62,10 @@ public class MeterInfo extends JFrame implements ActionListener {
 		clocation.setBounds(250,120,200,20);
 		p1.add(clocation);
 				
+		
 		JLabel jlmetertype = new JLabel("Meter Type : ");
-		jllocation.setBounds(100,160,150,20);
-		p1.add(jllocation);
+		jlmetertype.setBounds(100,160,150,20);
+		p1.add(jlmetertype);
 		
 		metertype = new Choice();
 		metertype.add("Electric Meter");
@@ -75,99 +74,71 @@ public class MeterInfo extends JFrame implements ActionListener {
 		metertype.setBounds(250,160,200,20);
 		p1.add(metertype);
 	
-		/*JLabel jlcity = new JLabel("City : ");
-		jlcity.setBounds(100,230,200,20);
-		p1.add(jlcity);
 		
-		city = new JTextField();
-		city.setBounds(250,230,200,20);
-		p1.add(city);
+		JLabel jlphasecode = new JLabel("Phasecode : ");
+		jlphasecode.setBounds(100,200,150,20);
+		p1.add(jlphasecode);
 		
-		
-		JLabel jlstate = new JLabel("State : ");
-		jlstate.setBounds(100,270,200,20);
-		p1.add(jlstate);
-		
-		state = new JTextField();
-		state.setBounds(250,270,200,20);
-		p1.add(state);
+		phasecode = new Choice();
+		phasecode.add("054");
+		phasecode.add("055");
+		phasecode.add("096");
+		phasecode.add("098");
+		phasecode.add("0106");
+		phasecode.setBounds(250,200,100,20);
+		p1.add(phasecode);
 		
 		
-		JLabel jlmobile = new JLabel("Mobile No. : ");
-		jlmobile.setBounds(100,310,200,20);
-		p1.add(jlmobile);
+		JLabel jlbilltype = new JLabel("Bill Type : ");
+		jlbilltype.setBounds(100,240,150,20);
+		p1.add(jlbilltype);
 		
-		mobile = new JTextField();
-		mobile.setBounds(250,310,200,20);
-		p1.add(mobile);
-		
-		
-		JLabel jlemail = new JLabel("Email : ");
-		jlemail.setBounds(100,350,200,20);
-		p1.add(jlemail);
-		
-		email = new JTextField();
-		email.setBounds(250,350,200,20);
-		p1.add(email);
-		*/
+		billtype = new Choice();
+		billtype.add("Normal");
+		billtype.add("Industrial");
+		billtype.setBounds(250,240,200,20);
+		p1.add(billtype);
 		
 		
-		next = new JButton("Next");
-		next.setBounds(100,420,100,30);
-		p1.add(next);
-		next.addActionListener(this);
-		
-		cancel = new JButton("Cancel");
-		cancel.setBounds(300,420,100,30);
-		p1.add(cancel);
-		cancel.addActionListener(this);
+		JLabel jlnote = new JLabel("Note : Bill will be generated for 30 days");
+		jlnote.setForeground(Color.RED);
+		jlnote.setBounds(100,300,400,20);
+		p1.add(jlnote);
 		
 		
 		
-		setSize(600,600);
+		submit = new JButton("Submit");
+		submit.setBounds(150,380,100,30);
+		p1.add(submit);
+		submit.addActionListener(this);
+		
+	
+		
+		setSize(600,500);
 		setLocation(400,100);
 		setResizable(false);
 		setVisible(true);
 		
 	}
 
-	public static void main(String[] args) {
-		new MeterInfo();
-	}
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		if(e.getSource() == next) {
-			if(mobile.getText().length()==10) {
-				if(!name.getText().equals("") && !email.getText().equals("") && !address.getText().equals("") && !city.getText().equals("") && !state.getText().equals("") ) {
-					String fname = name.getText();
-					long mobileNo = Long.parseLong(mobile.getText());
-					long meterno = meterNo;
-					String cemail = email.getText();
-					String caddress = address.getText();
-					String ccity = city.getText();
-					String cstate = state.getText();
-					if(ConnectionProvider.addCustomer(fname, meterno, mobileNo, cemail, caddress, ccity, cstate)) {
-						if(ConnectionProvider.addUser(fname, meterno, " ", "", "")) {
-							JOptionPane.showMessageDialog(this, "New Customer Account Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
-							setVisible(false);
-							new MeterInfo();
-						}
-					}
-				}else {
-					JOptionPane.showMessageDialog(this, "Please enter all details!", "Warning Message", JOptionPane.WARNING_MESSAGE);
-				}
-			}else {
-				JOptionPane.showMessageDialog(this, "Mobile no should be numaric and 10 number length.", "Warning Message", JOptionPane.WARNING_MESSAGE);
-			}
-			
-		}
 		
-		if(e.getSource() == cancel) {
-			System.out.println("Cancel Button");
+		if(e.getSource() == submit) {
+			String meterLocation = clocation.getSelectedItem();
+			String meterType = metertype.getSelectedItem();
+			String phaseCode = phasecode.getSelectedItem();
+			String billType = billtype.getSelectedItem();
+			if(ConnectionProvider.addMeterInfo(meterNo, meterLocation, meterType, phaseCode, billType)) {
+				JOptionPane.showMessageDialog(this, "New Customer Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
+				setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(this, "Something went wrong!\nplease try again.", "Warning Message", JOptionPane.WARNING_MESSAGE);
+			}
 		}
+			
 	}
 
 }

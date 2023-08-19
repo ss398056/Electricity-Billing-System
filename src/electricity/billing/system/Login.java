@@ -101,6 +101,7 @@ public class Login extends JFrame implements ActionListener {
 				String loginas = logginin.getSelectedItem();
 				if(ConnectionProvider.userAuth(uname, pass, loginas)) {
 					JOptionPane.showMessageDialog(this, "User successfully login.", "Success Message", JOptionPane.PLAIN_MESSAGE);
+					setVisible(false);
 					new MainPanel();
 				}else {
 					JOptionPane.showMessageDialog(this, "Please enter valid username and password!", "Warning Message", JOptionPane.WARNING_MESSAGE);
@@ -127,5 +128,6 @@ public class Login extends JFrame implements ActionListener {
 		
 	}
 
+	
 	
 }

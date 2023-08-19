@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.border.Border;
 
 import electricity.billing.system.helper.ConnectionProvider;
 
@@ -25,8 +26,9 @@ public class Splash extends JFrame implements Runnable{
 		JProgressBar b = new JProgressBar();
 		b.setValue(0);
 		b.setStringPainted(true);
-		b.setBounds(150,350,350,20);
+		b.setBounds(0,350,700,20);
 		b.setBackground(Color.WHITE);
+		b.setBorder(null);
 		add(b);
 		
 		ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/elec.jpg"));
@@ -46,6 +48,7 @@ public class Splash extends JFrame implements Runnable{
 		Thread t1= new Thread(this);
 		t1.start();
 		
+		//change progress value
 		int i= 0;
 		try {
 			while(i<=100) {
@@ -57,6 +60,7 @@ public class Splash extends JFrame implements Runnable{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 	
 	}
 	

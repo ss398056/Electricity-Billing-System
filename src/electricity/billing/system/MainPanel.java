@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -15,8 +16,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-public class MainPanel extends JFrame {
-	
+public class MainPanel extends JFrame implements ActionListener {
+	JMenuItem newCustomer,calculateBill,customerDetails,depositDetails;
 	public MainPanel() {
 		super("Electricity Billing System");
 		
@@ -35,43 +36,38 @@ public class MainPanel extends JFrame {
 		jm1.setForeground(new Color(155, 130, 232));
 		mb.add(jm1);
 		
-		JMenuItem newCustomer = new JMenuItem("New Customer");
+		newCustomer = new JMenuItem("New Customer");
 		newCustomer.setFont(new Font("Arial",Font.PLAIN,15));
 		newCustomer.setBackground(Color.WHITE);
 		newCustomer.setMnemonic('D');
 		newCustomer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.CTRL_MASK));
 		jm1.add(newCustomer);
+		newCustomer.addActionListener(this);
 		
 		
-		/*JMenuItem existingCustomer = new JMenuItem("Existing Customer");
-		existingCustomer.setFont(new Font("Arial",Font.PLAIN,15));
-		existingCustomer.setBackground(Color.WHITE);
-		existingCustomer.setMnemonic('F');
-		existingCustomer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK));
-		jm1.add(existingCustomer);
-		*/
-		
-		JMenuItem customerDetails = new JMenuItem("Customer Details");
+		customerDetails = new JMenuItem("Customer Details");
 		customerDetails.setFont(new Font("Arial",Font.PLAIN,15));
 		customerDetails.setBackground(Color.WHITE);
 		customerDetails.setMnemonic('G');
 		customerDetails.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,ActionEvent.CTRL_MASK));
 		jm1.add(customerDetails);
+		customerDetails.addActionListener(this);
 		
-		JMenuItem depositDetails = new JMenuItem("Deposit Details");
+		depositDetails = new JMenuItem("Deposit Details");
 		depositDetails.setFont(new Font("Arial",Font.PLAIN,15));
 		depositDetails.setBackground(Color.WHITE);
 		depositDetails.setMnemonic('H');
 		depositDetails.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,ActionEvent.CTRL_MASK));
 		jm1.add(depositDetails);
+		depositDetails.addActionListener(this);
 		
-		JMenuItem calculateBill = new JMenuItem("Calculate Bill");
+		calculateBill = new JMenuItem("Calculate Bill");
 		calculateBill.setFont(new Font("Arial",Font.PLAIN,15));
 		calculateBill.setBackground(Color.WHITE);
 		calculateBill.setMnemonic('J');
 		calculateBill.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J,ActionEvent.CTRL_MASK));
 		jm1.add(calculateBill);
-		
+		calculateBill.addActionListener(this);
 		
 		JMenu jm2 = new JMenu("Information");
 		jm2.setFont(new Font("Arial",Font.BOLD,17));
@@ -168,6 +164,26 @@ public class MainPanel extends JFrame {
 	
 	public static void main(String args[]) {
 		new MainPanel();
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()== newCustomer) {
+			new NewCustomer();
+		}
+		
+		if(e.getSource()== calculateBill) {
+			new CalculateBill();
+		}
+		
+		if(e.getSource()== depositDetails) {
+			new DepositDetails();
+		}
+		
+		if(e.getSource()== customerDetails) {
+			new CustomerDetails();
+		}
 	}
 
 }

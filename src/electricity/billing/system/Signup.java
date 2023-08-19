@@ -132,23 +132,42 @@ public class Signup extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == signup) {
-			
-			if(!meterNo.getText().equals("") && !name.getText().equals("") && !username.getText().equals("") && !password.getPassword().equals("") && !accountType.getSelectedItem().equals("")) {
+			if(!name.getText().equals("") && !username.getText().equals("") && !password.getPassword().equals("") && !accountType.getSelectedItem().equals("")) {
 				
 				String at = accountType.getSelectedItem();
-				String meterno = meterNo.getText();
 				String fname = name.getText();
 				String uname  = username.getText();
 				String pass = new String(password.getPassword());
-				long mno = Long.parseLong(meterno);
 				
-				if(ConnectionProvider.addUser(fname,mno,uname,pass,at)) {
-					JOptionPane.showMessageDialog(this, "Account Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
-					setVisible(false);
-					dispose();
-					new Login();
-				}else {
-					JOptionPane.showMessageDialog(this, "Something went wrong!", "Warning Message", JOptionPane.WARNING_MESSAGE);
+				if(accountType.getSelectedItem().equals("Admin")) {
+					if(ConnectionProvider.addUser(fname,uname,pass,at)) {
+						JOptionPane.showMessageDialog(this, "Account Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
+						setVisible(false);
+						dispose();
+						new Login();
+					}else {
+						JOptionPane.showMessageDialog(this, "Something went wrong!", "Warning Message", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+				if(accountType.getSelectedItem().equals("Customer")) {
+					if(!meterNo.getText().equals("")) {
+						String meterno = meterNo.getText();
+						long mno = Long.parseLong(meterno);
+						if(ConnectionProvider.isValidMeterNo(mno, fname)) {
+							if(ConnectionProvider.addUser(fname,mno,uname,pass,at)) {
+								JOptionPane.showMessageDialog(this, "Account Created Sccessfully.", "Success Message", JOptionPane.PLAIN_MESSAGE);
+								setVisible(false);
+								dispose();
+								new Login();
+							}else {
+								JOptionPane.showMessageDialog(this, "Something went wrong!", "Warning Message", JOptionPane.WARNING_MESSAGE);
+							}
+						}else {
+							JOptionPane.showMessageDialog(this, "Enter vaild meter no and full name.", "Warning Message", JOptionPane.WARNING_MESSAGE);
+						}
+					}else {
+						JOptionPane.showMessageDialog(this, "Customer must required to fill meter no.", "Warning Message", JOptionPane.WARNING_MESSAGE);
+					}
 				}
 				
 			}else {
